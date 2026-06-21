@@ -58,9 +58,14 @@ export const getMyOrders = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const getAllOrders = async (req: Request, res: Response) => {
+export const getAllOrders = async (req: AuthRequest, res: Response) => {
   try {
-     const orders = await OrderModel.find().sort({ createdAt: -1 });
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized! Please login first." });
+    }
+
+    const orders = await OrderModel.find().sort({ createdAt: -1 });
+    
     res.status(200).json({ message: "ok", data: orders });
   } catch (err) {
     console.error(err);

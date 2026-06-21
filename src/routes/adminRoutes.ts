@@ -1,9 +1,11 @@
 import express from "express";
 import { getDashboardStats } from "../controller/adminController";
-// import { protect, adminOnly } from "../middleware/authMiddleware"; // 👈 ඔයාගේ Auth Middleware තියෙනවා නම් මෙතනට සෙට් කරන්න මචං
+import { authenticate } from "../middleware/auth";
+import { requireRole } from "../middleware/role";
+import { UserRole } from "../models/userModel";
 
 const router = express.Router();
 
-router.get("/stats", getDashboardStats);
+router.get("/stats",authenticate, requireRole([UserRole.ADMIN]), getDashboardStats);
 
 export default router;
