@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { OrderModel } from "../models/orderModel";
 import { PlantModel } from "../models/plantModel";
-import { UserModel } from "../models/userModel";
+import { UserModel, UserRole } from "../models/userModel";
 
 export const getDashboardStats = async (req: Request, res: Response) => {
   try {
     const [totalOrders, totalPlants, totalUsers] = await Promise.all([
       OrderModel.countDocuments(),
       PlantModel.countDocuments(),
-      UserModel.countDocuments({ roles: "customer" }),
+      UserModel.countDocuments({ roles: UserRole.USER }),
     ]);
 
     const revenueStats = await OrderModel.aggregate([

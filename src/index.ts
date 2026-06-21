@@ -7,6 +7,7 @@ import plantRoutes from "./routes/plantRoutes"
 import userRoutes from "./routes/userRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import adminRoutes from "./routes/adminRoutes";
+import { seedAdminAccount } from "./utils/seedAdmin";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,8 +23,9 @@ app.use("/api/v1/admin", adminRoutes)
 
 mongoose
   .connect(MONGO_URL)
-  .then(() => {
-    console.log("MongoDB is connected")
+  .then(async() => {
+    console.log("MongoDB is connected");
+    await seedAdminAccount();
     app.listen(PORT, () => {
       console.log(`GreenMart Server is started and port is: ${PORT}`)
     })

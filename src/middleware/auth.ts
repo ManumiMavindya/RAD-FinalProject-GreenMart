@@ -9,7 +9,7 @@ export interface AuthRequest extends Request {
   user?: any; 
 }
 
-export const authMiddleware = (
+export const authenticate = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -17,7 +17,7 @@ export const authMiddleware = (
   const authHeader = req.headers.authorization;
   
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided..! ❌" });
+    return res.status(401).json({ message: "No token provided..!" });
   }
 
   const token = authHeader.split(" ")[1];
@@ -30,6 +30,6 @@ export const authMiddleware = (
     next(); 
   } catch (err) {
     console.error(err);
-    return res.status(401).json({ message: "Invalid or expired token..! ❌" });
+    return res.status(401).json({ message: "Invalid or expired token..!" });
   }
 };
